@@ -1,1 +1,1 @@
-com.vendo.web_starter.exception.GlobalExceptionHandler
+com.vendo.web_starter.exception.config.GlobalExceptionHandlerAutoConfiguration

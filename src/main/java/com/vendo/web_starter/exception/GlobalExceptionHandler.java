@@ -22,12 +22,6 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 
 import java.util.Map;
 
-@ConditionalOnProperty(
-        prefix = "vendo.web.exception-handler",
-        name = "enabled",
-        havingValue = "true",
-        matchIfMissing = true
-)
 @RestControllerAdvice
 public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
