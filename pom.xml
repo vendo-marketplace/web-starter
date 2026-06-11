@@ -1,0 +1,147 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+		 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<parent>
+		<groupId>org.springframework.boot</groupId>
+		<artifactId>spring-boot-starter-parent</artifactId>
+		<version>3.5.6</version>
+		<relativePath/>
+	</parent>
+
+	<groupId>io.github.vendo-marketplace-be</groupId>
+	<artifactId>web-starter</artifactId>
+	<version>1.0.0</version>
+	<packaging>jar</packaging>
+
+	<name>security-lib</name>
+	<description>Web starter library for the Vendo Marketplace project</description>
+	<url>https://github.com/vendo-marketplace-be/web-starter</url>
+
+	<dependencies>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-web</artifactId>
+			<scope>provided</scope>
+		</dependency>
+
+		<!--vendo libs-->
+
+		<dependency>
+			<groupId>io.github.vendo-marketplace-be</groupId>
+			<artifactId>core-lib</artifactId>
+			<version>4.8.4</version>
+		</dependency>
+
+		<dependency>
+			<groupId>io.github.vendo-marketplace-be</groupId>
+			<artifactId>security-lib</artifactId>
+			<version>8.3.2</version>
+		</dependency>
+
+	</dependencies>
+
+	<licenses>
+		<license>
+			<name>Apache License, Version 2.0</name>
+			<url>https://www.apache.org/licenses/LICENSE-2.0</url>
+			<distribution>repo</distribution>
+		</license>
+	</licenses>
+
+	<developers>
+		<developer>
+			<id>vendo</id>
+			<name>Vendo Team</name>
+			<email>vendo.marketplace.real@gmail.com</email>
+		</developer>
+	</developers>
+
+	<scm>
+		<connection>scm:git:https://github.com/vendo-marketplace-be/security-starter.git</connection>
+		<developerConnection>scm:git:ssh://github.com/vendo-marketplace-be/security-starter.git</developerConnection>
+		<url>https://github.com/vendo-marketplace-be/security-starter</url>
+	</scm>
+
+	<distributionManagement>
+		<repository>
+			<id>central</id>
+			<name>Maven Central</name>
+			<url>https://central.sonatype.com/publishing/deploy</url>
+		</repository>
+	</distributionManagement>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>3.11.0</version>
+				<configuration>
+					<source>17</source>
+					<target>17</target>
+				</configuration>
+			</plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-gpg-plugin</artifactId>
+				<version>3.2.4</version>
+				<executions>
+					<execution>
+						<id>sign-artifacts</id>
+						<phase>verify</phase>
+						<goals>
+							<goal>sign</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+
+			<plugin>
+				<groupId>org.sonatype.central</groupId>
+				<artifactId>central-publishing-maven-plugin</artifactId>
+				<version>0.8.0</version>
+				<extensions>true</extensions>
+				<configuration>
+					<publishingServerId>central</publishingServerId>
+				</configuration>
+			</plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-source-plugin</artifactId>
+				<version>3.3.0</version>
+				<executions>
+					<execution>
+						<id>attach-sources</id>
+						<goals>
+							<goal>jar</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-javadoc-plugin</artifactId>
+				<version>3.6.3</version>
+				<executions>
+					<execution>
+						<id>attach-javadocs</id>
+						<goals>
+							<goal>jar</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+
+		</plugins>
+	</build>
+
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<maven.compiler.release>17</maven.compiler.release>
+	</properties>
+</project>
