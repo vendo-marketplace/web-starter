@@ -32,10 +32,9 @@ Example — customizing behavior via `application.yaml`:
 
 ```yaml
 vendo:
-  web-starter:
+  web:
     exception-handler:
       enabled: true
-      include-stack-trace: false
 ```
 
 Example — overriding the default handler with a custom bean, which takes precedence over the auto-configured default:
