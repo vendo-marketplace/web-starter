@@ -33,7 +33,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     private final Logger log = LoggerFactory.getLogger(GlobalExceptionHandler.class);
 
     @Override
-    public ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatusCode status, WebRequest request) {
+    protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatusCode status, WebRequest request) {
         String path = ((ServletWebRequest) request).getRequest().getRequestURI();
         Map<String, String> errors = ValidationErrorConverter.fromField(ex.getBindingResult().getFieldErrors());
 
@@ -48,7 +48,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     }
 
     @Override
-    public ResponseEntity<Object> handleHandlerMethodValidationException(HandlerMethodValidationException ex, HttpHeaders headers, HttpStatusCode status, WebRequest request) {
+    protected ResponseEntity<Object> handleHandlerMethodValidationException(HandlerMethodValidationException ex, HttpHeaders headers, HttpStatusCode status, WebRequest request) {
         String path = ((ServletWebRequest) request).getRequest().getRequestURI();
         Map<String, String> errors = ValidationErrorConverter.fromParameter(ex.getParameterValidationResults());
 
@@ -63,7 +63,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     }
 
     @Override
-    public ResponseEntity<Object> handleHttpMediaTypeNotSupported(HttpMediaTypeNotSupportedException ex, HttpHeaders headers, HttpStatusCode status, WebRequest request) {
+    protected ResponseEntity<Object> handleHttpMediaTypeNotSupported(HttpMediaTypeNotSupportedException ex, HttpHeaders headers, HttpStatusCode status, WebRequest request) {
         String path = ((ServletWebRequest) request).getRequest().getRequestURI();
 
         ExceptionResponse exceptionResponse = ExceptionResponse.builder()
@@ -76,7 +76,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     }
 
     @Override
-    public ResponseEntity<Object> handleHttpMessageNotReadable(HttpMessageNotReadableException ex, HttpHeaders headers, HttpStatusCode status, WebRequest request) {
+    protected ResponseEntity<Object> handleHttpMessageNotReadable(HttpMessageNotReadableException ex, HttpHeaders headers, HttpStatusCode status, WebRequest request) {
         log.error("[HttpMessageNotReadableException]: {}.", ex.getMessage());
         String path = ((ServletWebRequest) request).getRequest().getRequestURI();
 
@@ -94,7 +94,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     }
 
     @Override
-    public ResponseEntity<Object> handleHttpRequestMethodNotSupported(HttpRequestMethodNotSupportedException ex, HttpHeaders headers, HttpStatusCode status, WebRequest request) {
+    protected ResponseEntity<Object> handleHttpRequestMethodNotSupported(HttpRequestMethodNotSupportedException ex, HttpHeaders headers, HttpStatusCode status, WebRequest request) {
         String path = ((ServletWebRequest) request).getRequest().getRequestURI();
 
         ExceptionResponse response = ExceptionResponse.builder()
@@ -107,7 +107,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     }
 
     @ExceptionHandler({IllegalArgumentException.class, IllegalStateException.class, NullPointerException.class})
-    public ResponseEntity<ExceptionResponse> handleException(Exception e, HttpServletRequest request) {
+    protected ResponseEntity<ExceptionResponse> handleException(Exception e, HttpServletRequest request) {
         log.error("Handling internal exception: {}.", e.getMessage());
 
         ExceptionResponse exceptionResponse = ExceptionResponse.builder()
