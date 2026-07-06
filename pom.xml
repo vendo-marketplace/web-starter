@@ -31,12 +31,19 @@
 			<optional>true</optional>
 		</dependency>
 
+		<!--test libs-->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-test</artifactId>
+			<scope>test</scope>
+		</dependency>
+
 		<!--vendo libs-->
 
 		<dependency>
 			<groupId>io.github.vendo-marketplace-be</groupId>
 			<artifactId>core-lib</artifactId>
-			<version>4.8.4</version>
+			<version>5.2.1</version>
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
