@@ -5,7 +5,7 @@ import com.fasterxml.jackson.databind.exc.InvalidFormatException;
 import com.vendo.core_lib.constants.Delimiters;
 import com.vendo.core_lib.utils.ClassFields;
 import com.vendo.core_lib.utils.StringUtils;
-import com.vendo.security_lib.exception.response.ExceptionResponse;
+import com.vendo.security_lib.exception.ExceptionResponse;
 import jakarta.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
