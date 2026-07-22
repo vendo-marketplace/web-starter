@@ -2,8 +2,8 @@ package com.vendo.web_starter.exception.props;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
-@ConfigurationProperties(prefix = "vendo.web.global-exception-handler")
-public class GlobalExceptionHandlerProperties {
+@ConfigurationProperties(prefix = "vendo.web.validation-exception-handler")
+public class ValidationExceptionHandlerProperties {
 
     private boolean enabled = true;
 
@@ -14,4 +14,5 @@ public class GlobalExceptionHandlerProperties {
     public void setEnabled(boolean enabled) {
         this.enabled = enabled;
     }
+
 }
