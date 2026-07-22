@@ -12,12 +12,10 @@ import jakarta.validation.ConstraintViolationException;
 import jakarta.validation.Path;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.ServletWebRequest;
@@ -122,6 +120,26 @@ public class ValidationExceptionHandler extends ResponseEntityExceptionHandler {
                 .build();
 
         return ResponseEntity.badRequest().body(exceptionResponse);
+    }
+
+    @ExceptionHandler(MissingServletRequestParameterException.class)
+    ResponseEntity<ExceptionResponse> handleMissingServletRequestParameterException(MissingServletRequestParameterException e, HttpServletRequest request) {
+        ExceptionResponse exceptionResponse = ExceptionResponse.builder()
+                .message("Validation failed.")
+                .code(HttpStatus.BAD_REQUEST.value())
+                .errors(Map.of(e.getParameterName(), getDefaultMissingParameterMessage(e.getParameterName(), e.getBody())))
+                .path(request.getRequestURI())
+                .build();
+
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(exceptionResponse);
+    }
+
+    private String getDefaultMissingParameterMessage(String fieldName, ProblemDetail problemDetail) {
+        if (problemDetail != null && !StringUtils.isEmpty(problemDetail.getDetail())) {
+            return problemDetail.getDetail();
+        }
+
+        return "%s parameter is missing.".formatted(fieldName);
     }
 
     private String lastPropertyNode(ConstraintViolation<?> violation) {
