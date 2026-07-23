@@ -2,8 +2,8 @@ package com.vendo.web_starter.exception.props;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
-@ConfigurationProperties(prefix = "vendo.web.validation-exception-handler")
-public class ValidationExceptionHandlerProperties {
+@ConfigurationProperties(prefix = "vendo.web.response-entity-exception-handler")
+public class ResponseEntityExceptionHandlerProperties {
 
     private boolean enabled = true;
 

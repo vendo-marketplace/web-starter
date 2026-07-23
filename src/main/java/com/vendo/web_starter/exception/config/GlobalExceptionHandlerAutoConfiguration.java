@@ -13,7 +13,7 @@ public class GlobalExceptionHandlerAutoConfiguration {
 
     @Bean
     @ConditionalOnProperty(
-            prefix = "vendo.web.exception-handler",
+            prefix = "vendo.web.global-exception-handler",
             name = "enabled",
             havingValue = "true",
             matchIfMissing = true

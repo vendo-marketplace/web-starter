@@ -10,7 +10,7 @@ import java.util.Map;
 import java.util.TreeMap;
 import java.util.stream.Collectors;
 
-class ValidationErrorConverter {
+public class ValidationErrorConverter {
 
     static Map<String, String> fromField(List<FieldError> fieldErrors) {
         return fieldErrors.stream()
