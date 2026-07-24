@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.ServletWebRequest;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.method.annotation.HandlerMethodValidationException;
+import org.springframework.web.multipart.MaxUploadSizeExceededException;
 import org.springframework.web.multipart.support.MissingServletRequestPartException;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
@@ -38,6 +39,18 @@ public class DefaultResponseEntityExceptionHandler extends ResponseEntityExcepti
                 .build();
 
         return ResponseEntity.status(status.value()).body(response);
+    }
+
+    @Override
+    protected ResponseEntity<Object> handleMaxUploadSizeExceededException(MaxUploadSizeExceededException ex, HttpHeaders headers, HttpStatusCode status, WebRequest request) {
+        String path = ((ServletWebRequest) request).getRequest().getRequestURI();
+
+        ExceptionResponse exceptionResponse = ExceptionResponse.builder()
+                .message("File size upload exceeded.")
+                .code(HttpStatus.BAD_REQUEST.value())
+                .path(path)
+                .build();
+        return ResponseEntity.internalServerError().body(exceptionResponse);
     }
 
     @Override
