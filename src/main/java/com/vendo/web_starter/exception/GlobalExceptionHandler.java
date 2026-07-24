@@ -35,8 +35,8 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(InvalidFormatException.class)
-    private ResponseEntity<Object> handleInvalidFormatException(InvalidFormatException e, String path) {
-        return SharedHandlers.handleInvalidFormatException(e, path);
+    private ResponseEntity<Object> handleInvalidFormatException(InvalidFormatException e, HttpServletRequest request) {
+        return SharedHandlers.handleInvalidFormatException(e, request.getRequestURI());
     }
 
     @ExceptionHandler(ConstraintViolationException.class)
