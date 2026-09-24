@@ -6,6 +6,8 @@ import com.vendo.core_lib.constants.Delimiters;
 import com.vendo.core_lib.utils.ClassFields;
 import com.vendo.core_lib.utils.StringUtils;
 import com.vendo.security_lib.exception.ExceptionResponse;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
@@ -14,11 +16,14 @@ import java.util.Map;
 
 final class SharedHandlers {
 
+    private static final Logger log = LoggerFactory.getLogger(SharedHandlers.class);
+
     static ResponseEntity<Object> handleInvalidFormatException(InvalidFormatException e, String path) {
         String fieldName = getJacksonFieldName(e.getPath());
         String[] enumValues = ClassFields.getEnumValues(e.getTargetType());
 
         if (StringUtils.isEmpty(fieldName) || enumValues.length == 0) {
+            log.warn("Handling invalid format: {}.", e.getMessage());
             return ResponseEntity.internalServerError().body(HandlerUtils.buildInternalErrorBody(path));
         }
 
