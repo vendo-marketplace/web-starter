@@ -1,27 +1,35 @@
 package com.vendo.web_starter.exception;
 
 import com.fasterxml.jackson.databind.exc.InvalidFormatException;
+import com.vendo.core_lib.constants.Delimiters;
 import com.vendo.core_lib.utils.StringUtils;
 import com.vendo.security_lib.exception.ExceptionResponse;
+import jakarta.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.core.Ordered;
+import org.springframework.core.annotation.Order;
 import org.springframework.http.*;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.HttpMediaTypeNotSupportedException;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.MissingServletRequestParameterException;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.ServletWebRequest;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.method.annotation.HandlerMethodValidationException;
+import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 import org.springframework.web.multipart.MaxUploadSizeExceededException;
 import org.springframework.web.multipart.support.MissingServletRequestPartException;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
+import java.util.Arrays;
 import java.util.Map;
 
 @RestControllerAdvice
+@Order(Ordered.LOWEST_PRECEDENCE - 1)
 public class DefaultResponseEntityExceptionHandler extends ResponseEntityExceptionHandler {
 
     private final Logger log = LoggerFactory.getLogger(DefaultResponseEntityExceptionHandler.class);
@@ -39,6 +47,18 @@ public class DefaultResponseEntityExceptionHandler extends ResponseEntityExcepti
                 .build();
 
         return ResponseEntity.status(status.value()).body(response);
+    }
+
+    @ExceptionHandler(MethodArgumentTypeMismatchException.class)
+    public ResponseEntity<ExceptionResponse> handleMethodArgumentTypeMismatchException(MethodArgumentTypeMismatchException e, HttpServletRequest request) {
+        ExceptionResponse exceptionResponse = ExceptionResponse.builder()
+                .message("Validation failed.")
+                .code(HttpStatus.BAD_REQUEST.value())
+                .path(request.getRequestURI())
+                .errors(Map.of(e.getName(), buildTypeMismatchMessage(e)))
+                .build();
+
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(exceptionResponse);
     }
 
     @Override
@@ -136,6 +156,14 @@ public class DefaultResponseEntityExceptionHandler extends ResponseEntityExcepti
                 .build();
 
         return ResponseEntity.status(HttpStatus.METHOD_NOT_ALLOWED.value()).body(response);
+    }
+
+    private String buildTypeMismatchMessage(MethodArgumentTypeMismatchException e) {
+        Class<?> requiredType = e.getRequiredType();
+        if (requiredType == null || !requiredType.isEnum()) return "Invalid value: %s.".formatted(e.getValue());
+
+        String allowedValues = String.join(Delimiters.COMMA_DELIMITER, Arrays.stream(requiredType.getEnumConstants()).map(Object::toString).toList());
+        return "Allowed values are: %s.".formatted(allowedValues);
     }
 
     private String getDefaultMissingValueMessage(String fieldName, ProblemDetail problemDetail) {
