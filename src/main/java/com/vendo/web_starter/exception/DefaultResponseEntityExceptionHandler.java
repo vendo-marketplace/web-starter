@@ -7,6 +7,8 @@ import com.vendo.security_lib.exception.ExceptionResponse;
 import jakarta.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.core.Ordered;
+import org.springframework.core.annotation.Order;
 import org.springframework.http.*;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.HttpMediaTypeNotSupportedException;
@@ -27,6 +29,7 @@ import java.util.Arrays;
 import java.util.Map;
 
 @RestControllerAdvice
+@Order(Ordered.LOWEST_PRECEDENCE - 1)
 public class DefaultResponseEntityExceptionHandler extends ResponseEntityExceptionHandler {
 
     private final Logger log = LoggerFactory.getLogger(DefaultResponseEntityExceptionHandler.class);
@@ -162,7 +165,6 @@ public class DefaultResponseEntityExceptionHandler extends ResponseEntityExcepti
         String allowedValues = String.join(Delimiters.COMMA_DELIMITER, Arrays.stream(requiredType.getEnumConstants()).map(Object::toString).toList());
         return "Allowed values are: %s.".formatted(allowedValues);
     }
-
 
     private String getDefaultMissingValueMessage(String fieldName, ProblemDetail problemDetail) {
         if (problemDetail != null && !StringUtils.isEmpty(problemDetail.getDetail())) {
